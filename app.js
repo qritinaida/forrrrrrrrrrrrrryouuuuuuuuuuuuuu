@@ -11,9 +11,7 @@ function initApp() {
   setupHeartsCanvas();
   setupAudioPlayer();
   setupEnvelopeScreen();
-  setupLoveCounter();
   setupQuestionGame();
-  setupMemoriesGallery();
   setupCelebrateButton();
 }
 
@@ -23,36 +21,27 @@ function initApp() {
 function applyConfigData() {
   if (typeof CONFIG === 'undefined') return;
 
-  // ข้อมูลคู่รัก
-  setText('hero-your-name', CONFIG.couple.yourName);
-  setText('hero-partner-name', CONFIG.couple.partnerName);
-  setText('hero-nickname', CONFIG.couple.nickname);
-  setText('footer-partner-name', CONFIG.couple.partnerName);
-
   // ข้อมูลซองจดหมาย
-  setText('env-badge', CONFIG.envelope.badge);
-  setText('env-title', CONFIG.envelope.title);
-  setText('env-tagline', CONFIG.envelope.tagline);
-  setText('wax-text', CONFIG.envelope.sealText);
+  setText('env-badge', CONFIG.envelope && CONFIG.envelope.badge);
+  setText('env-title', CONFIG.envelope && CONFIG.envelope.title);
+  setText('env-tagline', CONFIG.envelope && CONFIG.envelope.tagline);
+  setText('wax-text', CONFIG.envelope && CONFIG.envelope.sealText);
 
   // ข้อมูลคำถาม
-  setText('q-title', CONFIG.question.title);
-  setText('q-sub', CONFIG.question.subtitle);
-  setText('btn-yes-text', CONFIG.question.yesBtn);
-  setText('btn-no-text', CONFIG.question.noBtn);
-  setText('success-title', CONFIG.question.successTitle);
-  setText('success-subtitle', CONFIG.question.successSubtitle);
+  setText('q-title', CONFIG.question && CONFIG.question.title);
+  setText('q-sub', CONFIG.question && CONFIG.question.subtitle);
+  setText('btn-yes-text', CONFIG.question && CONFIG.question.yesBtn);
+  setText('btn-no-text', CONFIG.question && CONFIG.question.noBtn);
+  setText('success-title', CONFIG.question && CONFIG.question.successTitle);
+  setText('success-subtitle', CONFIG.question && CONFIG.question.successSubtitle);
 
   // ข้อมูลจดหมาย
-  setText('letter-title', CONFIG.loveLetter.title);
-  setText('letter-closing', CONFIG.loveLetter.closing);
-  setText('letter-signoff', CONFIG.loveLetter.signOff);
+  setText('letter-title', CONFIG.loveLetter && CONFIG.loveLetter.title);
+  setText('letter-closing', CONFIG.loveLetter && CONFIG.loveLetter.closing);
+  setText('letter-signoff', CONFIG.loveLetter && CONFIG.loveLetter.signOff);
 
   // ท้ายเว็บ
-  const footerText = document.getElementById('footer-text');
-  if (footerText) {
-    footerText.innerHTML = `${CONFIG.footer.text} <span>${CONFIG.couple.partnerName}</span> 💕`;
-  }
+  setText('footer-text', (CONFIG.footer && CONFIG.footer.text) || "Made with all my heart for you 💕");
 }
 
 function setText(id, text) {
@@ -215,45 +204,7 @@ function playChime(freq) {
   osc.stop(audioContext.currentTime + 1.2);
 }
 
-// ------------------------------------------------------------------------------
-// 4. นับวันเวลาแห่งความรัก (Love Day Counter แบบ Realtime)
-// ------------------------------------------------------------------------------
-function setupLoveCounter() {
-  const daysEl = document.getElementById('timer-days');
-  const hoursEl = document.getElementById('timer-hours');
-  const minsEl = document.getElementById('timer-minutes');
-  const secsEl = document.getElementById('timer-seconds');
 
-  if (!daysEl) return;
-
-  const startDate = new Date(CONFIG.startDate || "2024-01-01T00:00:00");
-
-  function updateTimer() {
-    const now = new Date();
-    const diff = now - startDate;
-
-    if (diff < 0) {
-      daysEl.textContent = '0';
-      hoursEl.textContent = '00';
-      minsEl.textContent = '00';
-      secsEl.textContent = '00';
-      return;
-    }
-
-    const seconds = Math.floor((diff / 1000) % 60);
-    const minutes = Math.floor((diff / (1000 * 60)) % 60);
-    const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-    const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-    daysEl.textContent = days.toLocaleString();
-    hoursEl.textContent = hours < 10 ? '0' + hours : hours;
-    minsEl.textContent = minutes < 10 ? '0' + minutes : minutes;
-    secsEl.textContent = seconds < 10 ? '0' + seconds : seconds;
-  }
-
-  updateTimer();
-  setInterval(updateTimer, 1000);
-}
 
 // ------------------------------------------------------------------------------
 // 5. คำถามวัดใจสุดน่ารัก (ปุ่ม 'ไม่รัก' วิ่งหนีเมาส์และนิ้วแตะ)
@@ -321,69 +272,15 @@ function setupQuestionGame() {
     fireHeartConfetti();
     setTimeout(fireHeartConfetti, 400);
     setTimeout(fireHeartConfetti, 800);
+
+    // เลื่อนหน้าจอลงไปที่จดหมายความในใจให้อัตโนมัติ
+    setTimeout(() => {
+      const letterSection = document.getElementById('letter-section');
+      if (letterSection) {
+        letterSection.scrollIntoView({ behavior: 'smooth' });
+      }
+    }, 1400);
   });
-}
-
-// ------------------------------------------------------------------------------
-// 6. แกลเลอรีความทรงจำรูปถ่ายโพลารอยด์
-// ------------------------------------------------------------------------------
-function setupMemoriesGallery() {
-  const grid = document.getElementById('polaroid-grid');
-  if (!grid || !CONFIG.memories) return;
-
-  grid.innerHTML = '';
-
-  CONFIG.memories.forEach((memory) => {
-    const card = document.createElement('div');
-    card.className = 'polaroid-card';
-
-    card.innerHTML = `
-      <div class="polaroid-img-wrapper">
-        <img src="${memory.image}" alt="${memory.caption}" loading="lazy" onerror="this.src='assets/images/photo4.svg'">
-      </div>
-      <p class="polaroid-caption">${memory.caption}</p>
-      <span class="polaroid-date">${memory.date || ''}</span>
-    `;
-
-    // คลิกเพื่อดูรูปใหญ่ (Lightbox Modal)
-    card.addEventListener('click', () => {
-      openModal(memory.image, memory.caption, memory.date);
-    });
-
-    grid.appendChild(card);
-  });
-
-  setupModal();
-}
-
-function setupModal() {
-  const modal = document.getElementById('image-modal');
-  const backdrop = document.getElementById('modal-backdrop');
-  const closeBtn = document.getElementById('modal-close');
-
-  if (!modal) return;
-
-  const closeModal = () => modal.classList.add('hidden');
-
-  if (backdrop) backdrop.addEventListener('click', closeModal);
-  if (closeBtn) closeBtn.addEventListener('click', closeModal);
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape') closeModal();
-  });
-}
-
-function openModal(imgSrc, caption, date) {
-  const modal = document.getElementById('image-modal');
-  const modalImg = document.getElementById('modal-img');
-  const modalCap = document.getElementById('modal-caption');
-  const modalDate = document.getElementById('modal-date');
-
-  if (!modal || !modalImg) return;
-
-  modalImg.src = imgSrc;
-  modalCap.textContent = caption || '';
-  modalDate.textContent = date || '';
-  modal.classList.remove('hidden');
 }
 
 // ------------------------------------------------------------------------------

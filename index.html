@@ -79,59 +79,7 @@
   <!-- ========================================================================= -->
   <main class="main-content hidden" id="main-content">
 
-    <!-- HERO & LOVE COUNTER SECTION -->
-    <section class="section hero-section">
-      <div class="container">
-        
-        <!-- คู่รัก Badge & ชื่อ -->
-        <div class="couple-card">
-          <div class="floating-petals">🌸 ✨ 💖</div>
-          <div class="couple-avatars">
-            <div class="avatar you-avatar">
-              <span class="avatar-icon">👦🏻</span>
-              <span class="avatar-name" id="hero-your-name">เค้าเอง</span>
-            </div>
-            <div class="heart-connector">
-              <div class="beating-heart">💖</div>
-              <div class="connector-line"></div>
-            </div>
-            <div class="avatar partner-avatar">
-              <span class="avatar-icon">👧🏻</span>
-              <span class="avatar-name" id="hero-partner-name">คนดี</span>
-            </div>
-          </div>
-          
-          <h2 class="hero-nickname" id="hero-nickname">เจ้าความสดใส ✨</h2>
-          <p class="hero-tagline">เราตกหลุมรักและอยู่เคียงข้างกันมาแล้ว...</p>
 
-          <!-- ตัวนับวันเวลา (Love Timer Realtime) -->
-          <div class="timer-grid" id="timer-grid">
-            <div class="timer-box">
-              <span class="timer-number" id="timer-days">0</span>
-              <span class="timer-label">วัน (Days)</span>
-            </div>
-            <div class="timer-box">
-              <span class="timer-number" id="timer-hours">00</span>
-              <span class="timer-label">ชั่วโมง</span>
-            </div>
-            <div class="timer-box">
-              <span class="timer-number" id="timer-minutes">00</span>
-              <span class="timer-label">นาที</span>
-            </div>
-            <div class="timer-box">
-              <span class="timer-number" id="timer-seconds">00</span>
-              <span class="timer-label">วินาที</span>
-            </div>
-          </div>
-
-          <div class="timer-footer">
-            <span class="infinity-symbol">∞</span>
-            <p>และจะรักเธอต่อไปในทุกๆ วินาที</p>
-          </div>
-        </div>
-
-      </div>
-    </section>
 
     <!-- INTERACTIVE QUESTION SECTION (ปุ่มไม่รักจะวิ่งหนี) -->
     <section class="section question-section" id="question-section">
@@ -158,24 +106,8 @@
           <div class="success-box hidden" id="success-box">
             <div class="success-icon">🎉 🥳 💖</div>
             <h4 id="success-title">เย้! รู้อยู่แล้วว่าต้องรัก คิคิ 💖</h4>
-            <p id="success-subtitle">เค้าก็รักเธอที่สุดเลยนะ ไปดูความทรงจำของเรากันต่อเถอะ! 👇</p>
+            <p id="success-subtitle">เค้าก็รักเธอที่สุดเลยนะ เลื่อนลงไปอ่านจดหมายความในใจได้เลยนะ 👇</p>
           </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- POLAROID MEMORIES SECTION -->
-    <section class="section memories-section" id="memories-section">
-      <div class="container">
-        <div class="section-heading">
-          <span class="section-tag">PHOTO ALBUM</span>
-          <h3 class="section-title">ความทรงจำสุดพิเศษของเรา 📸</h3>
-          <p class="section-subtitle">ทุกๆ ที่ที่ได้ไปด้วยกัน มีรอยยิ้มของเธอเสมอ</p>
-        </div>
-
-        <!-- กริดแสดงรูปโพลารอยด์ -->
-        <div class="polaroid-grid" id="polaroid-grid">
-          <!-- ข้อมูลจะถูก render โดย app.js จาก config.js -->
         </div>
       </div>
     </section>
@@ -221,23 +153,12 @@
     <!-- FOOTER -->
     <footer class="footer">
       <div class="container">
-        <p class="footer-text" id="footer-text">Made with all my heart for <span id="footer-partner-name">My Love</span> 💕</p>
+        <p class="footer-text" id="footer-text">Made with all my heart for you 💕</p>
         <p class="footer-note">Every moment with you is my favorite memory.</p>
       </div>
     </footer>
 
   </main>
-
-  <!-- LIGHTBOX MODAL สำหรับดูรูปโพลารอยด์ขนาดใหญ่ -->
-  <div class="modal hidden" id="image-modal">
-    <div class="modal-backdrop" id="modal-backdrop"></div>
-    <div class="modal-content">
-      <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
-      <img id="modal-img" src="" alt="Memory">
-      <p class="modal-caption" id="modal-caption"></p>
-      <span class="modal-date" id="modal-date"></span>
-    </div>
-  </div>
 
   <!-- โหลดสคริปต์การตั้งค่าและการทำงาน -->
   <script src="config.js"></script>

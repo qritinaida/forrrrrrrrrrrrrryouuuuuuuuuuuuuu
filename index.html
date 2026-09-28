@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>For You 💖 ของขวัญสุดพิเศษสำหรับเธอ</title>
+  
+  <!-- Open Graph Meta สำหรับแสดงผลเวลาแชร์ลิงก์ใน LINE / Facebook / Messenger -->
+  <meta property="og:title" content="A Special Surprise For You 💌">
+  <meta property="og:description" content="มีของขวัญและความในใจพิเศษอยากจะบอก... ลองเปิดดูสิ!">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="assets/images/photo4.svg">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>💌</text></svg>">
+
+  <!-- Google Fonts: Mitr, Prompt, Nunito, Caveat สำหรับฟอนต์ภาษาไทยและลายมือสุดน่ารัก -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@600;700&family=Mitr:wght@300;400;500;600&family=Nunito:wght@400;600;700;800&family=Prompt:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Canvas Confetti Library จาก CDN (สำหรับเอฟเฟกต์พลุหัวใจ) -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Canvas ละอองหัวใจและประกายวิ้งๆ ลอยอยู่พื้นหลัง -->
+  <canvas id="bg-canvas"></canvas>
+
+  <!-- ปุ่มควบคุมเพลงมุมขวาบน -->
+  <div class="music-floating-btn" id="music-btn" title="เปิด/ปิดเพลง">
+    <div class="music-icon" id="music-icon">🎵</div>
+    <div class="music-waves" id="music-waves">
+      <span></span><span></span><span></span>
+    </div>
+  </div>
+
+  <!-- แท็กเสียงเพลงพื้นหลัง -->
+  <audio id="bg-audio" loop preload="auto"></audio>
+
+  <!-- ========================================================================= -->
+  <!-- SCREEN 1: ซองจดหมายเปิดใจ (Envelope Welcome Screen) -->
+  <!-- ========================================================================= -->
+  <section class="envelope-screen" id="envelope-screen">
+    <div class="envelope-wrapper">
+      <div class="envelope-header">
+        <span class="envelope-badge" id="env-badge">SPECIAL LETTER</span>
+        <h1 class="envelope-title" id="env-title">มีของขวัญและความในใจจะบอก...</h1>
+        <p class="envelope-tagline" id="env-tagline">แตะที่ซองจดหมายเพื่อเปิดดูนะ 💌</p>
+      </div>
+
+      <!-- กล่องซองจดหมายแบบ 3D Interaction -->
+      <div class="envelope-box" id="envelope-box" role="button" aria-label="Open envelope">
+        <div class="envelope-flap" id="envelope-flap"></div>
+        <div class="envelope-letter-preview">
+          <div class="preview-heart">💖</div>
+          <p>For My Love</p>
+        </div>
+        <div class="envelope-pocket"></div>
+        
+        <!-- ตราประทับขี้ผึ้ง (Wax Seal) -->
+        <div class="wax-seal" id="wax-seal">
+          <div class="wax-seal-inner">
+            <span class="wax-text" id="wax-text">LOVE</span>
+            <span class="wax-heart">♥</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="click-hint">
+        <span class="pulse-hand">👆</span> กดที่ตราประทับเพื่อเปิด
+      </div>
+    </div>
+  </section>
+
+  <!-- ========================================================================= -->
+  <!-- SCREEN 2: เนื้อหาเซอร์ไพรส์หลัก (Main Surprise Experience) -->
+  <!-- ========================================================================= -->
+  <main class="main-content hidden" id="main-content">
+
+    <!-- HERO & LOVE COUNTER SECTION -->
+    <section class="section hero-section">
+      <div class="container">
+        
+        <!-- คู่รัก Badge & ชื่อ -->
+        <div class="couple-card">
+          <div class="floating-petals">🌸 ✨ 💖</div>
+          <div class="couple-avatars">
+            <div class="avatar you-avatar">
+              <span class="avatar-icon">👦🏻</span>
+              <span class="avatar-name" id="hero-your-name">เค้าเอง</span>
+            </div>
+            <div class="heart-connector">
+              <div class="beating-heart">💖</div>
+              <div class="connector-line"></div>
+            </div>
+            <div class="avatar partner-avatar">
+              <span class="avatar-icon">👧🏻</span>
+              <span class="avatar-name" id="hero-partner-name">คนดี</span>
+            </div>
+          </div>
+          
+          <h2 class="hero-nickname" id="hero-nickname">เจ้าความสดใส ✨</h2>
+          <p class="hero-tagline">เราตกหลุมรักและอยู่เคียงข้างกันมาแล้ว...</p>
+
+          <!-- ตัวนับวันเวลา (Love Timer Realtime) -->
+          <div class="timer-grid" id="timer-grid">
+            <div class="timer-box">
+              <span class="timer-number" id="timer-days">0</span>
+              <span class="timer-label">วัน (Days)</span>
+            </div>
+            <div class="timer-box">
+              <span class="timer-number" id="timer-hours">00</span>
+              <span class="timer-label">ชั่วโมง</span>
+            </div>
+            <div class="timer-box">
+              <span class="timer-number" id="timer-minutes">00</span>
+              <span class="timer-label">นาที</span>
+            </div>
+            <div class="timer-box">
+              <span class="timer-number" id="timer-seconds">00</span>
+              <span class="timer-label">วินาที</span>
+            </div>
+          </div>
+
+          <div class="timer-footer">
+            <span class="infinity-symbol">∞</span>
+            <p>และจะรักเธอต่อไปในทุกๆ วินาที</p>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- INTERACTIVE QUESTION SECTION (ปุ่มไม่รักจะวิ่งหนี) -->
+    <section class="section question-section" id="question-section">
+      <div class="container">
+        <div class="question-card" id="question-card">
+          <div class="question-badge">SECRET QUESTION 🤫</div>
+          <h3 class="question-title" id="q-title">ถามจริงๆ นะ... รักเค้ามั้ยเอ่ย? 🥺</h3>
+          <p class="question-sub" id="q-sub">ตอบตามความจริงนะ ห้ามโกหกเด็ดขาด!</p>
+
+          <!-- กล่องปุ่มคำถาม -->
+          <div class="answers-wrapper" id="answers-wrapper">
+            <button class="btn btn-yes" id="btn-yes">
+              <span class="btn-text" id="btn-yes-text">รักที่สุดในโลกเลย! 💕</span>
+            </button>
+            <button class="btn btn-no" id="btn-no">
+              <span class="btn-text" id="btn-no-text">ไม่รักหรอก 😜</span>
+            </button>
+          </div>
+
+          <!-- ข้อความหยอกล้อเวลาพยายามกดไม่รัก -->
+          <div class="no-toast-bubble hidden" id="no-toast"></div>
+
+          <!-- กล่องแสดงความยินดีเมื่อกดรัก -->
+          <div class="success-box hidden" id="success-box">
+            <div class="success-icon">🎉 🥳 💖</div>
+            <h4 id="success-title">เย้! รู้อยู่แล้วว่าต้องรัก คิคิ 💖</h4>
+            <p id="success-subtitle">เค้าก็รักเธอที่สุดเลยนะ ไปดูความทรงจำของเรากันต่อเถอะ! 👇</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- POLAROID MEMORIES SECTION -->
+    <section class="section memories-section" id="memories-section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-tag">PHOTO ALBUM</span>
+          <h3 class="section-title">ความทรงจำสุดพิเศษของเรา 📸</h3>
+          <p class="section-subtitle">ทุกๆ ที่ที่ได้ไปด้วยกัน มีรอยยิ้มของเธอเสมอ</p>
+        </div>
+
+        <!-- กริดแสดงรูปโพลารอยด์ -->
+        <div class="polaroid-grid" id="polaroid-grid">
+          <!-- ข้อมูลจะถูก render โดย app.js จาก config.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- HEARTFELT LOVE LETTER SECTION -->
+    <section class="section letter-section" id="letter-section">
+      <div class="container">
+        <div class="section-heading">
+          <span class="section-tag">FROM THE HEART</span>
+          <h3 class="section-title">จดหมายความในใจ 💌</h3>
+        </div>
+
+        <!-- การ์ดกระดาษจดหมายวินเทจสุดโรแมนติก -->
+        <div class="paper-letter">
+          <div class="paper-clip">📎</div>
+          <div class="letter-stamp">
+            <span>OFFICIAL LOVE</span>
+            <div class="stamp-heart">♥</div>
+          </div>
+
+          <h4 class="letter-salutation" id="letter-title">ถึงคนดีของเค้า...</h4>
+
+          <div class="letter-body" id="letter-body">
+            <!-- ข้อความตัวอักษรจะค่อยๆ พิมพ์ออกมา -->
+          </div>
+
+          <div class="letter-signature">
+            <p class="closing" id="letter-closing">รักเสมอและตลอดไป,</p>
+            <p class="sign-off" id="letter-signoff">จากแฟนคนนี้เอง 🥰</p>
+          </div>
+
+          <!-- ปุ่มส่งหัวใจฉลอง -->
+          <div class="letter-action">
+            <button class="btn btn-celebrate" id="btn-celebrate">
+              <span>💖 ส่งหัวใจและความรักให้เธอ 💖</span>
+            </button>
+            <span class="celebrate-count" id="heart-count">ส่งหัวใจไปแล้ว: <b id="count-number">0</b> ดวง 💕</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+      <div class="container">
+        <p class="footer-text" id="footer-text">Made with all my heart for <span id="footer-partner-name">My Love</span> 💕</p>
+        <p class="footer-note">Every moment with you is my favorite memory.</p>
+      </div>
+    </footer>
+
+  </main>
+
+  <!-- LIGHTBOX MODAL สำหรับดูรูปโพลารอยด์ขนาดใหญ่ -->
+  <div class="modal hidden" id="image-modal">
+    <div class="modal-backdrop" id="modal-backdrop"></div>
+    <div class="modal-content">
+      <button class="modal-close" id="modal-close" aria-label="Close modal">&times;</button>
+      <img id="modal-img" src="" alt="Memory">
+      <p class="modal-caption" id="modal-caption"></p>
+      <span class="modal-date" id="modal-date"></span>
+    </div>
+  </div>
+
+  <!-- โหลดสคริปต์การตั้งค่าและการทำงาน -->
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
